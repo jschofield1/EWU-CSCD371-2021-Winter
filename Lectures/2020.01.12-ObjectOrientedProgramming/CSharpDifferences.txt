@@ -1,0 +1,33 @@
+using declarative: imports APIs into the global namespace.
+	System.Console.WriteLine(); => Console.WriteLine(); // Using declaration
+	System.Console.WriteLine(); => WriteLine(); // Static import
+
+Garbage Collection
+	Memory is automatically managed - unlike C/C++
+
+Encapsulation:
+	Properties
+
+	
+"Functional like programming"
+	Leveraging concepts like LINQ (not yet covered)
+	Lambda expressions (not yet covered)
+
+Pattern matching
+	switch statements (and if statements)
+
+XML Comments
+	Embedded comments in the code that can be exported into XML documentation of the API
+
+Type inference with var (added in JDK 10)
+	
+
+Nullability
+	
+
+Deconstructors
+	
+Pointers
+	Unmanaged code
+
+
