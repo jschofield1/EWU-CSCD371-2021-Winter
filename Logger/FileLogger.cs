@@ -1,7 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using System.IO;
 
 namespace Logger
 {
@@ -9,24 +9,21 @@ namespace Logger
     {
         public string FilePath { get; set; }
         public override string ClassName { get; set; }
+        
         public FileLogger(string filePath)
         {
-            FilePath = filePath;
+            this.FilePath = filePath;
             ClassName = "FileLogger";
         }
         public override void Log(LogLevel logLevel, string message)
         {
-            StreamWriter appendMessage;
-            try
-            {
-                appendMessage = new StreamWriter(FilePath);
-            }
-            catch (ArgumentNullException)
-            {
+            if (FilePath == null)
                 throw new ArgumentNullException(FilePath);
-            }
+            
+            StreamWriter appendMessage = File.AppendText(FilePath);
 
-            string dateTime = DateTime.Now.ToString("yyyy-MM-dd_HH:mm");
+            string dateTime = DateTime.Now.ToString("yyyy-MM-dd/h:m:s");
+            
             appendMessage.WriteLine("Date/time: " + dateTime);
             appendMessage.WriteLine(ClassName);
             appendMessage.WriteLine(logLevel);
