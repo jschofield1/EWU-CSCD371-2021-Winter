@@ -1,6 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.IO;
 
 namespace Logger.Tests
 {
@@ -10,13 +8,13 @@ namespace Logger.Tests
         private static readonly string filePath = "Logger.Tests";
 
         [TestMethod]
-        public void ConfigureFileLogger_SetsFilePath()
+        public void ConfigureFileLogger_SetsFilePath_PathMatchesLog()
         {
             //Arrange
             var logger = new LogFactory();
-            logger.ConfigureFileLogger(filePath);
 
             //Act
+            logger.ConfigureFileLogger(filePath);
 
             //Assert
             Assert.AreEqual(filePath, logger.FilePath);

@@ -68,7 +68,7 @@ namespace Logger.Tests
         }
 
         [TestMethod]
-        public void Error_WithData_LogsMessage()
+        public void Error_WithData_SuccessfullyLogsMessage()
         {
             // Arrange
             var logger = new TestLogger();
@@ -83,7 +83,7 @@ namespace Logger.Tests
         }
 
         [TestMethod]
-        public void Warning_WithData_LogsMessage()
+        public void Warning_WithData_SuccessfullyLogsMessage()
         {
             //Arrange
             var logger = new TestLogger();
@@ -97,7 +97,7 @@ namespace Logger.Tests
         }
 
         [TestMethod]
-        public void Information_WithData_LogsMessage()
+        public void Information_WithData_SuccessfullyLogsMessage()
         {
             //Arrange
             var logger = new TestLogger();
@@ -111,7 +111,7 @@ namespace Logger.Tests
         }
 
         [TestMethod]
-        public void Debug_WithData_LogsMessage()
+        public void Debug_WithData_SuccessfullyLogsMessage()
         {
             //Arrange
             var logger = new TestLogger();

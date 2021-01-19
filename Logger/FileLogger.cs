@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Logger
 {
@@ -15,6 +13,7 @@ namespace Logger
             this.FilePath = filePath;
             ClassName = "FileLogger";
         }
+
         public override void Log(LogLevel logLevel, string message)
         {
             if (FilePath == null)
@@ -22,7 +21,7 @@ namespace Logger
             
             StreamWriter appendMessage = File.AppendText(FilePath);
 
-            string dateTime = DateTime.Now.ToString("yyyy-MM-dd/h:m:s");
+            string dateTime = DateTime.Now.ToString("yyyy-mm-dd/h:m:s");
             
             appendMessage.WriteLine("Date/time: " + dateTime);
             appendMessage.WriteLine(ClassName);

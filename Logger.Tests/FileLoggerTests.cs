@@ -1,8 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Logger.Tests
 {
@@ -10,29 +7,40 @@ namespace Logger.Tests
     public class FileLoggerTests
     {
         [TestMethod]
-        public void FileLogger_CheckingFilePath()
+        public void FileLogger_ChecksFilePath_PathIsExpected()
         {
-            FileLogger logger = new FileLogger("TestFile.txt");
+            //Arrange
 
-            Assert.AreEqual("TestFile.txt", logger.FilePath);
+            //Act
+            FileLogger logger = new FileLogger("testFile.txt");
+            
+            //Assert
+            Assert.AreEqual("testFile.txt", logger.FilePath);
         }
 
         [TestMethod]
-        public void FileLogger_CheckingClassName()
+        public void FileLogger_ChecksClassName_NameIsExpected()
         {
-            FileLogger logger = new FileLogger("TestFile.txt");
+            //Arrange
+            
+            //Act
+            FileLogger logger = new FileLogger("testFile.txt");
 
+            //Assert
             Assert.AreEqual("FileLogger", logger.ClassName);
         }
 
         [TestMethod]
-        public void FileLogger_InputMatchesWithLog()
+        public void FileLogger_ChecksInput_InputMatchesLog()
         {
-            FileLogger logger = new FileLogger("TestFile.txt");
+            //Arrange
+            FileLogger logger = new FileLogger("testFile.txt");
 
+            //Act
             logger.Log(LogLevel.Error, "Testing");
-            string[]? testFileLines = File.ReadAllLines("TestFile.txt");
+            string[]? testFileLines = File.ReadAllLines("testFile.txt");
 
+            //Assert
             Assert.AreEqual(logger.ClassName, testFileLines[1]);
         }
     }
