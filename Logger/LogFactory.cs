@@ -1,12 +1,37 @@
-﻿using System;
+﻿namespace Logger
+{
+    public class LogFactory
+    {
+        private string? fileLoggerPath;
+
+        public BaseLogger? CreateLogger(string className)
+        {
+
+            if (!(fileLoggerPath is null))
+            {
+                return new FileLogger(fileLoggerPath) { ClassName = className };
+            }
+
+            return null;
+        }
+
+        public void ConfigureFileLogger(string filePath)
+        {
+            fileLoggerPath = filePath;
+        }
+    }
+}
+/*
+using System;
 using System.IO;
 
 namespace Logger
 {
     public class LogFactory
     {
-        public string? FilePath { get; private set; }
-        public string? ClassName { get; set; } = "LogFactory";
+
+        public string? FilePath { get; set; }
+        public string ClassName { get; set; } = "LogFactory";
         public BaseLogger CreateLogger(string? className)
         {
             BaseLogger? logger = null;
@@ -15,21 +40,16 @@ namespace Logger
                 ClassName = className;
                 string filePath = GetFilePath();
                 ConfigureFileLogger(filePath);
-#pragma warning disable CS8604 // Possible null reference argument
+#pragma warning disable CS8604 // Possible null reference argument.
                 FileLogger fileLogger = new FileLogger(FilePath);
-#pragma warning restore CS8604 // Possible null reference argument 
+#pragma warning restore CS8604 // Possible null reference argument. 
                 logger = fileLogger;
-
             }
+
             if (logger == null)
-            {
                 throw new NullReferenceException("BaseLogger is null, try again");
-            }
-
             else
-            {
                 return logger;
-            }
         }
 
         public void ConfigureFileLogger(string filePath)
@@ -49,3 +69,4 @@ namespace Logger
         }
     }
 }
+*/

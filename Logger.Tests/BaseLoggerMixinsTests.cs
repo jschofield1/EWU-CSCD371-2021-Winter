@@ -119,7 +119,6 @@ namespace Logger.Tests
             //Act
             logger.Debug("Debug Message {0}", 15);
 
-
             //Assert
             Assert.AreEqual("Debug Message 15", logger.LoggedMessages[0].Message);
         }
