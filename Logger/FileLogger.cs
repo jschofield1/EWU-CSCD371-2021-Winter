@@ -10,7 +10,7 @@ namespace Logger
         
         public FileLogger(string filePath)
         {
-            this.FilePath = filePath;
+            FilePath = filePath;
             ClassName = "FileLogger";
         }
 

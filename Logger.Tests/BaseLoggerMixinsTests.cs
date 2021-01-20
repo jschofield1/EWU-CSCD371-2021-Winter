@@ -14,9 +14,7 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            BaseLoggerMixins.Error(null, "");
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            BaseLoggerMixins.Error(null!, "");
 
             // Assert
 
@@ -29,9 +27,7 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            BaseLoggerMixins.Warning(null, "");
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            BaseLoggerMixins.Warning(null!, "");
 
             // Assert
 
@@ -44,9 +40,7 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            BaseLoggerMixins.Information(null, "");
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            BaseLoggerMixins.Information(null!, "");
 
             // Assert
 
@@ -59,16 +53,14 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            BaseLoggerMixins.Debug(null, "");
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            BaseLoggerMixins.Debug(null!, "");
 
             // Assert
 
         }
 
         [TestMethod]
-        public void Error_WithData_SuccessfullyLogsMessage()
+        public void Error_WithData_LogsMessage()
         {
             // Arrange
             var logger = new TestLogger();
@@ -83,7 +75,7 @@ namespace Logger.Tests
         }
 
         [TestMethod]
-        public void Warning_WithData_SuccessfullyLogsMessage()
+        public void Warning_WithData_LogsMessage()
         {
             //Arrange
             var logger = new TestLogger();
@@ -97,7 +89,7 @@ namespace Logger.Tests
         }
 
         [TestMethod]
-        public void Information_WithData_SuccessfullyLogsMessage()
+        public void Information_WithData_LogsMessage()
         {
             //Arrange
             var logger = new TestLogger();
@@ -111,7 +103,7 @@ namespace Logger.Tests
         }
 
         [TestMethod]
-        public void Debug_WithData_SuccessfullyLogsMessage()
+        public void Debug_WithData_LogsMessage()
         {
             //Arrange
             var logger = new TestLogger();

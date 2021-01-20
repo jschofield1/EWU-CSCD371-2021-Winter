@@ -7,40 +7,29 @@ namespace Logger.Tests
     public class FileLoggerTests
     {
         [TestMethod]
-        public void FileLogger_ChecksFilePath_PathIsExpected()
+        public void FileLogger_ChecksFilePath_PathMatches()
         {
-            //Arrange
-
-            //Act
             FileLogger logger = new FileLogger("testFile.txt");
             
-            //Assert
             Assert.AreEqual("testFile.txt", logger.FilePath);
         }
 
         [TestMethod]
-        public void FileLogger_ChecksClassName_NameIsExpected()
+        public void FileLogger_ChecksClassName_NameMatches()
         {
-            //Arrange
-            
-            //Act
             FileLogger logger = new FileLogger("testFile.txt");
 
-            //Assert
             Assert.AreEqual("FileLogger", logger.ClassName);
         }
 
         [TestMethod]
-        public void FileLogger_ChecksInput_InputMatchesLog()
+        public void FileLogger_ChecksInput_InputMatches()
         {
-            //Arrange
             FileLogger logger = new FileLogger("testFile.txt");
 
-            //Act
             logger.Log(LogLevel.Error, "Testing");
             string[]? testFileLines = File.ReadAllLines("testFile.txt");
 
-            //Assert
             Assert.AreEqual(logger.ClassName, testFileLines[1]);
         }
     }

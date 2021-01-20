@@ -5,7 +5,8 @@ namespace Logger
 {
     public class LogFactory
     {
-        public string? FilePath { get; set; }
+
+        public string? FilePath { get; private set; }
         public string? ClassName { get; set; } = "LogFactory";
         
         public BaseLogger CreateLogger(string? className)
@@ -14,12 +15,10 @@ namespace Logger
             
             if (className == nameof(FileLogger))
             {
-                this.ClassName = className;
+                ClassName = className;
                 string filePath = GetFilePath();
                 ConfigureFileLogger(filePath);
-#pragma warning disable CS8604 // Possible null reference argument.
-                FileLogger fileLogger = new FileLogger(FilePath);
-#pragma warning restore CS8604 // Possible null reference argument.
+                FileLogger fileLogger = new FileLogger(FilePath!);
                 logger = fileLogger;
             }
             
@@ -31,7 +30,7 @@ namespace Logger
 
         public void ConfigureFileLogger(string filePath)
         {
-            this.FilePath = filePath;
+            FilePath = filePath;
         }
 
         private static string GetFilePath()
