@@ -27,6 +27,19 @@ namespace PrincessBrideTrivia.Tests
             }
         }
 
+        [TestMethod]
+        public void LoadQuestions_ReturnsFalseIfQuestionsAreNull()
+        {
+            string filePath = Path.GetRandomFileName();
+
+            GenerateQuestionsFile(filePath, 2);
+
+            Question[] questions = Program.LoadQuestions(filePath);
+
+            for (int i = 0; i < questions.Length; i++)
+                Assert.IsNotNull(questions[i]);
+        }
+
         [DataTestMethod]
         [DataRow("1", true)]
         [DataRow("2", false)]
@@ -60,8 +73,8 @@ namespace PrincessBrideTrivia.Tests
         [DataRow(5, 10, "50%")]
         [DataRow(1, 10, "10%")]
         [DataRow(0, 10, "0%")]
-        public void GetPercentCorrect_ReturnsExpectedPercentage(int numberOfCorrectGuesses, 
-            int numberOfQuestions, string expectedString)
+        public void GetPercentCorrect_ReturnsExpectedPercentage(double numberOfCorrectGuesses,
+            double numberOfQuestions, string expectedString)
         {
             // Arrange
 
@@ -71,7 +84,6 @@ namespace PrincessBrideTrivia.Tests
             // Assert
             Assert.AreEqual(expectedString, percentage);
         }
-
 
         private static void GenerateQuestionsFile(string filePath, int numberOfQuestions)
         {
@@ -88,3 +100,4 @@ namespace PrincessBrideTrivia.Tests
         }
     }
 }
+
