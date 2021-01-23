@@ -21,13 +21,13 @@ namespace Logger
             
             StreamWriter appendMessage = File.AppendText(FilePath);
 
-            string dateTime = DateTime.Now.ToString("yyyy-mm-dd/h:m:s");
+            string dateTime = DateTime.Now.ToString("yyyy-MM-dd/hh:mm:ss");
             
             appendMessage.WriteLine("Date/time: " + dateTime);
             appendMessage.WriteLine(ClassName);
             appendMessage.WriteLine(logLevel);
             appendMessage.WriteLine(message);
-            appendMessage.Dispose();
+            appendMessage.Close();
         }
     }
 }
