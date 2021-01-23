@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.IO;
 
 namespace Logger.Tests
@@ -7,30 +8,72 @@ namespace Logger.Tests
     public class FileLoggerTests
     {
         [TestMethod]
-        public void FileLogger_ChecksFilePath_PathMatches()
+        public void FileLogger_AssignGoodFilePath_PathMatches()
         {
-            FileLogger logger = new FileLogger("testFile.txt");
-            
-            Assert.AreEqual("testFile.txt", logger.FilePath);
+            //Arrange
+            FileLogger? logger = new FileLogger("testFile");
+
+            //Act
+            string path = "";
+            if (logger != null && !string.IsNullOrEmpty(logger.FilePath))
+                path = logger.FilePath;
+
+            //Assert
+            Assert.AreEqual(path, "testFile");
         }
 
         [TestMethod]
-        public void FileLogger_ChecksClassName_NameMatches()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void FileLogger_AssignNullFilePath_ReturnsArgumentNullException()
         {
-            FileLogger logger = new FileLogger("testFile.txt");
+            //Arrange
 
-            Assert.AreEqual("FileLogger", logger.ClassName);
+            //Act
+            _ = new FileLogger(null!);
+
+            //Assert
         }
 
         [TestMethod]
-        public void FileLogger_ChecksInput_InputMatches()
+        public void FileLogger_AssignsGoodFilePath_LogMatchesInput()
         {
-            FileLogger logger = new FileLogger("testFile.txt");
+            if (!File.Exists("testFile.txt"))
+                throw new FileNotFoundException();
 
-            logger.Log(LogLevel.Error, "Testing");
-            string[]? testFileLines = File.ReadAllLines("testFile.txt");
+            string filePath = "testFile.txt";
 
-            Assert.AreEqual(logger.ClassName, testFileLines[1]);
+            //Arrange
+            LogFactory? logFactory = new LogFactory();
+            logFactory.ConfigureFileLogger(filePath);
+            FileLogger? fileLogger = (FileLogger?)logFactory.CreateLogger(nameof(FileLogger));
+            string? dateTime = null;
+
+            //Act
+            if (fileLogger != null)
+            {
+                fileLogger.Log(LogLevel.Error, "Testing");
+                dateTime = DateTime.Now.ToString("yyyy-MM-dd/HH:mm:ss");
+            }
+            string[]? lines = File.ReadAllLines("testFile.txt");
+
+            //Assert
+            Assert.AreEqual("Date/time: " + dateTime, lines[0]);
+            Assert.AreEqual(nameof(FileLogger), lines[1]);
+            Assert.AreEqual(nameof(LogLevel.Error), lines[2]);
+            Assert.AreEqual("Testing", lines[3]);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void Log_PassedBadFile_ReturnsFileNotFoundException()
+        {
+            //Arrange
+            FileLogger? fileLogger = new FileLogger("");
+
+            //Act
+            fileLogger.Log(LogLevel.Error, "BadFile");
+
+            //Assert
         }
     }
 }

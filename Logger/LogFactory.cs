@@ -1,29 +1,17 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Logger
 {
     public class LogFactory
     {
+        private string? FilePath { get; set; }
 
-        public string? FilePath { get; private set; }
-        public string? ClassName { get; set; } = "LogFactory";
-        
-        public BaseLogger CreateLogger(string? className)
+        public BaseLogger? CreateLogger(string className)
         {
-            BaseLogger? logger = null;
-            
-            if (className == nameof(FileLogger))
-            {
-                ClassName = className;
-                string filePath = GetFilePath();
-                ConfigureFileLogger(filePath);
-                FileLogger fileLogger = new FileLogger(FilePath!);
-                logger = fileLogger;
-            }
-            
-            if (logger == null)
-                throw new NullReferenceException("BaseLogger is null");
+            if (FilePath == null || !File.Exists(FilePath))
+                return null;
+           
+            FileLogger logger = new FileLogger(FilePath) { ClassName = className };
 
             return logger;
         }
@@ -31,15 +19,6 @@ namespace Logger
         public void ConfigureFileLogger(string filePath)
         {
             FilePath = filePath;
-        }
-
-        private static string GetFilePath()
-        {
-            if (!File.Exists("testFile.txt"))
-                throw new FileNotFoundException("testFile.txt not found");
-         
-            string testFile = "testFile.txt";
-            return testFile;
         }
     }
 }

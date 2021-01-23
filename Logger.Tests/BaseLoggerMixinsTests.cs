@@ -14,10 +14,9 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-            BaseLoggerMixins.Error(null!, "");
+            BaseLoggerMixins.Error(null, "");
 
             // Assert
-
         }
 
         [TestMethod]
@@ -27,10 +26,9 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-            BaseLoggerMixins.Warning(null!, "");
+            BaseLoggerMixins.Warning(null, "");
 
             // Assert
-
         }
 
         [TestMethod]
@@ -40,10 +38,9 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-            BaseLoggerMixins.Information(null!, "");
+            BaseLoggerMixins.Information(null, "");
 
             // Assert
-
         }
 
         [TestMethod]
@@ -53,10 +50,9 @@ namespace Logger.Tests
             // Arrange
 
             // Act
-            BaseLoggerMixins.Debug(null!, "");
+            BaseLoggerMixins.Debug(null, "");
 
             // Assert
-
         }
 
         [TestMethod]
@@ -114,13 +110,10 @@ namespace Logger.Tests
             //Assert
             Assert.AreEqual("Debug Message 15", logger.LoggedMessages[0].Message);
         }
-
     }
 
     public class TestLogger : BaseLogger
     {
-        public override string ClassName { get; set; } = "TestLogger";
-
         public List<(LogLevel LogLevel, string Message)> LoggedMessages { get; } = new List<(LogLevel, string)>();
 
         public override void Log(LogLevel logLevel, string message)

@@ -5,26 +5,29 @@ namespace Logger
 {
     public class FileLogger : BaseLogger
     {
-        public string FilePath { get; set; }
-        public override string ClassName { get; set; }
-        
+        private string? filePath;
+        public string FilePath
+        {
+            get => filePath!;
+            set => filePath = value ?? throw new ArgumentNullException(null);
+        }
+
         public FileLogger(string filePath)
         {
             FilePath = filePath;
-            ClassName = "FileLogger";
         }
 
         public override void Log(LogLevel logLevel, string message)
         {
-            if (FilePath == null)
-                throw new ArgumentNullException(FilePath);
+            if (FilePath == null || !File.Exists(FilePath))
+                throw new FileNotFoundException("FilePath is null or does not exist");
             
-            StreamWriter appendMessage = File.AppendText(FilePath);
+            TextWriter appendMessage = new StreamWriter(FilePath);
 
-            string dateTime = DateTime.Now.ToString("yyyy-MM-dd/hh:mm:ss");
-            
+            string dateTime = DateTime.Now.ToString("yyyy-MM-dd/HH:mm:ss");
+
             appendMessage.WriteLine("Date/time: " + dateTime);
-            appendMessage.WriteLine(ClassName);
+            appendMessage.WriteLine(base.ClassName);
             appendMessage.WriteLine(logLevel);
             appendMessage.WriteLine(message);
             appendMessage.Close();
