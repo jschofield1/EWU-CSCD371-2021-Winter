@@ -36,14 +36,14 @@ namespace CanHazFunny.Tests
         {
             //Assign
             IJokeService jokeService = new JokeService();
-            IJokeOutput outputService = new JokeOutput();
+            IJokeOutput jokeOutput = new JokeOutput();
 
             //Act
-            _ = new Jester(jokeService, outputService);
+            _ = new Jester(jokeService, jokeOutput);
 
             //Assert
             Assert.IsNotNull(jokeService);
-            Assert.IsNotNull(outputService);
+            Assert.IsNotNull(jokeOutput);
         }
 
         [TestMethod]
