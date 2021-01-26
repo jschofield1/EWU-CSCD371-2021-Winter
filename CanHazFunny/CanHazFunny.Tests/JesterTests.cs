@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using Moq;
 
 namespace CanHazFunny.Tests
 {
@@ -8,16 +9,57 @@ namespace CanHazFunny.Tests
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Jester_PassNullIJokeOutput_ThrowsArgumentNullException()
+        public void Jester_AssignsNullJokeService_ThrowsArgumentNullException()
         {
+            //Assign
+
+            //Act
             _ = new Jester(new JokeService(), null);
+
+            //Assert
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Jester_PassNullIJokeService_ThrowsArgumentNullException()
+        public void Jester_AssignsNullJokeOutput_ThrowsArgumentNullException()
         {
+            //Assign
+
+            //Act
             _ = new Jester(null, new JokeOutput());
+
+            //Assert
+        }
+
+        [TestMethod]
+        public void Jester_AssignsJokeServiceAndJokeOutput_BothNotNull()
+        {
+            //Assign
+            IJokeService jokeService = new JokeService();
+            IJokeOutput outputService = new JokeOutput();
+
+            //Act
+            _ = new Jester(jokeService, outputService);
+
+            //Assert
+            Assert.IsNotNull(jokeService);
+            Assert.IsNotNull(outputService);
+        }
+
+        [TestMethod]
+        public void Jester_TellJokeFiltersOutChuckNorris_ReturnsJokesWithoutChuckNorris()
+        {
+            //Assign
+            Mock<IJokeService> mock = new Mock<IJokeService>();
+            _ = mock.SetupSequence(JokeService => JokeService.GetJoke())
+                .Returns("Chuck Norris joke")
+                .Returns("Yo momma joke");
+
+            //Act
+            new Jester(mock.Object, new JokeOutput()).TellJoke();
+
+            //Assert
+            mock.Verify(jokeService => jokeService.GetJoke(), Times.Exactly(2));
         }
     }
 }
