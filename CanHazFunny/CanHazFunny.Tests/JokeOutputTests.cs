@@ -10,18 +10,18 @@ namespace CanHazFunny.Tests
         public void JokeOutput_PassStringToPrintJoke_WritesInputToConsole()
         {
             //Assign
-            Mock<IJokeService> mockJoke = new Mock<IJokeService>();
-            _ = mockJoke.SetupSequence(jokeService => jokeService.GetJoke())
+            Mock<IJokeService> mockJokeService = new Mock<IJokeService>();
+            _ = mockJokeService.SetupSequence(jokeService => jokeService.GetJoke())
                 .Returns("Corny dad joke");
 
-            Mock<IJokeOutput> mockOutput = new Mock<IJokeOutput>();
-            _ = mockOutput.SetupSequence(jokeOutput => jokeOutput.PrintJoke("Corny dad joke"));
+            Mock<IJokeOutput> mockJokeOutput = new Mock<IJokeOutput>();
+            _ = mockJokeOutput.SetupSequence(jokeOutput => jokeOutput.PrintJoke("Corny dad joke"));
 
             //Act
-            new Jester(mockJoke.Object, mockOutput.Object).TellJoke();
+            new Jester(mockJokeService.Object, mockJokeOutput.Object).TellJoke();
 
             //Assert
-            mockOutput.VerifyAll();
+            mockJokeOutput.VerifyAll();
         }
     }
 }
