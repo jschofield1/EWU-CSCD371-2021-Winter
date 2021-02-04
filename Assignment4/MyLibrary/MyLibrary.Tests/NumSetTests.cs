@@ -205,5 +205,35 @@ namespace MyLibrary.Tests
 
             //Assert
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ImplicitConvertArray_TakesNullHashSet_ThrowsArgumentNullException()
+        {
+            // Assign
+            NumSet numSet = new NumSet()
+            {
+                MySet = null
+            };
+
+            // Act
+            int[] array = numSet;
+
+            // Assert
+        }
+
+        [TestMethod]
+        public void ImplicitConvertArray_TakesNumSet_HasSameValues()
+        {
+            // Assign
+            int[] array = new int[] { 1, 2, 3, 4, 5 };
+            NumSet numSet = new NumSet(array);
+
+            // Act
+            int[] returnArray = numSet;
+
+            // Assert
+            CollectionAssert.AreEqual(array, returnArray);
+        }
     }
 }
