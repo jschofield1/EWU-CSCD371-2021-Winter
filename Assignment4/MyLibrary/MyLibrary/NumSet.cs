@@ -59,6 +59,8 @@ namespace MyLibrary
 
         public int[] ReturnArray()
             => MySet!.ToArray();
+
+        public static implicit operator int[](NumSet numSet) => numSet.ReturnArray();
     }
 }
 
