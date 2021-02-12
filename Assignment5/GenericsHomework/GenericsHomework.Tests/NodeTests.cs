@@ -13,7 +13,7 @@ namespace GenericsHomework.Tests
             
             node.Insert(2);
 
-            Assert.AreEqual(2, node.Count);
+            Assert.AreEqual<int>(2, node.Count);
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace GenericsHomework.Tests
             node.Insert(3);
             node.CopyTo(copiedArray, 0);
 
-            Assert.AreEqual(expectedArray.ToString(), copiedArray.ToString());
+            Assert.AreEqual<string>($"{expectedArray.ToString()}", $"{copiedArray.ToString()}");
         }
         
         [TestMethod]
@@ -141,7 +141,7 @@ namespace GenericsHomework.Tests
             node.Insert(3);
             node.Remove(2);
 
-            Assert.AreEqual("1 3", $"{node.ToString()} {node.Next.ToString()}");
+            Assert.AreEqual<string>("1 3", $"{node.ToString()} {node.Next.ToString()}");
         }
         
         [TestMethod]
@@ -156,7 +156,7 @@ namespace GenericsHomework.Tests
             {
                 second.Add(item);
             }
-            Assert.AreEqual("2 1", $"{second.ToString()} {second.Next.ToString()}");
+            Assert.AreEqual<string>("2 1", $"{second.ToString()} {second.Next.ToString()}");
         }
     }
 }

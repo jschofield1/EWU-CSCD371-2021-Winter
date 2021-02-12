@@ -29,7 +29,7 @@ namespace GenericsHomework
             {
                 return _Next!;
             }
-            set
+            private set
             {
                 value._Next = this;
                 _Next = value ??
@@ -83,6 +83,7 @@ namespace GenericsHomework
             Next = newNode;
         }
 
+        /* No need to worry about garbage collection in the case of a circular list, garbage collector handles circular references */
         public void Clear()
         {
             Next = this;
