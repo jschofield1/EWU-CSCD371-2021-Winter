@@ -29,7 +29,7 @@ namespace GenericsHomework
             {
                 return _Next!;
             }
-            set
+            private set
             {
                 value._Next = this;
                 _Next = value ??
