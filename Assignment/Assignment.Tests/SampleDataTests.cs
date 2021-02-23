@@ -14,6 +14,7 @@ namespace Assignment.Tests
         public void SampleData_CsvRows_ReturnsCollection(string fileName)
         {
             SampleData sampleData = new SampleData();
+
             IEnumerable<string> testList = new List<String>();
 
             IEnumerable<string> result = sampleData.CsvRows;
@@ -45,15 +46,17 @@ namespace Assignment.Tests
         public void SampleData_CsvRowsPassedFilePath_LoadsDataProperly()
         {
             SampleData sampleData = new();
-            IEnumerable<string> enumerable = sampleData.CsvRows;
 
-            Assert.AreEqual("1,Priscilla,Jenyns,pjenyns0@state.gov,7884 Corry Way,Helena,MT,70577", enumerable.First());
+            IEnumerable<string> result = sampleData.CsvRows;
+
+            Assert.AreEqual("1,Priscilla,Jenyns,pjenyns0@state.gov,7884 Corry Way,Helena,MT,70577", result.First());
         }
 
         [TestMethod]
         public void SampleData_GetUniqueSortedListOFStatesPassedCsvRows_LinqReturnsOrderedList()
         {
             SampleData sampleData = new();
+
             IEnumerable<string> states = sampleData.GetUniqueSortedListOfStatesGivenCsvRows();
 
             bool result = states.SequenceEqual(states.OrderBy(item => item));
@@ -64,13 +67,14 @@ namespace Assignment.Tests
         [TestMethod]
         public void SampleData_GetAggregateSortedListOfStatesUsingCsvRows_ReturnsArrayOfStates()
         {
-            SampleData sample = new SampleData();
-            IEnumerable<string> stateCollection = sample.GetUniqueSortedListOfStatesGivenCsvRows();
+            SampleData sampleData = new SampleData();
+
+            IEnumerable<string> stateCollection = sampleData.GetUniqueSortedListOfStatesGivenCsvRows();
 
             string[] expectedStringArray = stateCollection.ToArray<string>();
             string expectedString = String.Join(", ", expectedStringArray);
 
-            string stateString = sample.GetAggregateSortedListOfStatesUsingCsvRows();
+            string stateString = sampleData.GetAggregateSortedListOfStatesUsingCsvRows();
 
             Assert.AreEqual(expectedString, stateString);
         }
@@ -79,6 +83,7 @@ namespace Assignment.Tests
         public void SampleData_GetAggregateSortedListOfStatesUsingCsvRows_ReturnsStringofStates()
         {
             SampleData sampleData = new();
+
             string expected = "AL, AZ, CA, DC, FL, GA, IN, KS, LA, MD, MN, MO, MT, NC, NE, NH, NV, NY, OR, PA, SC, TN, TX, UT, VA, WA, WV";
             string actual = sampleData.GetAggregateSortedListOfStatesUsingCsvRows();
 
@@ -89,6 +94,7 @@ namespace Assignment.Tests
         public void SampleData_PeopleGivenRows_CreatesSortedPeopleEnum()
         {
             SampleData sampleData = new();
+
             IEnumerable<IPerson> actual = sampleData.CsvRows.Select(item =>
             {
                 string[] items = item.Split(',');
@@ -109,9 +115,10 @@ namespace Assignment.Tests
         [TestMethod]
         public void SampleData_PeoplePassedHardCodedPerson_FoundInList()
         {
-            Address address = new("7884 Corry Way", "Helena", "MT", "70577");
-            Person person = new("Priscilla", "Jenyns", address, "pjenyns0@state.gov");
             SampleData sampleData = new();
+
+            Address address = new("7 Onsgard Lane", "Frederick", "MD", "56551");
+            Person person = new("Jermaine", "Danelutti", address, "jdaneluttim@jimdo.com");
 
             bool output = sampleData.People.Any(item =>
             (item.FirstName == person.FirstName &&
@@ -129,12 +136,13 @@ namespace Assignment.Tests
         public void SampleData_FilterByEmailAddress_ReturnsFilteredList()
         {
             SampleData sampleData = new SampleData();
+
             IEnumerable<IPerson> expected = sampleData.People;
 
-            expected = expected.Where(item => item.EmailAddress.Equals("smahonyg@stanford.edu"));
+            expected = expected.Where(item => item.EmailAddress.Equals("cstennine2@wired.com"));
+            
             IEnumerable<(string FirstName, string LastName)> expectedTuple = expected.Select(item => (item.FirstName, item.LastName));
-
-            IEnumerable<(string FirstName, string LastName)> filteredList = sampleData.FilterByEmailAddress(item => item.Equals("smahonyg@stanford.edu"));
+            IEnumerable<(string FirstName, string LastName)> filteredList = sampleData.FilterByEmailAddress(item => item.Equals("cstennine2@wired.com"));
 
             CollectionAssert.AreEqual(expectedTuple.ToList(), filteredList.ToList());
         }
@@ -143,21 +151,22 @@ namespace Assignment.Tests
         public void SampleData_FilterByEmailAddressUsingValidPreicate_ReturnsPerson()
         {
             SampleData sampleData = new();
-            IEnumerable<(string, string)> actual = sampleData.FilterByEmailAddress(item => item.Contains("stanford"));
 
-            bool personOne = actual.Any(item => item.Item1 == "Sancho" && item.Item2 == "Mahony");
-            bool personTwo = actual.Any(item => item.Item1 == "Fayette" && item.Item2 == "Dougherty");
+            IEnumerable<(string, string)> actual = sampleData.FilterByEmailAddress(item => item.Contains("addthis"));
 
-            Assert.IsTrue(personOne);
-            Assert.IsTrue(personTwo);
+            bool firstPerson = actual.Any(item => item.Item1 == "Iggy" && item.Item2 == "Baughen");
+            bool secondPerson = actual.Any(item => item.Item1 == "Sayres" && item.Item2 == "Rumble");
+
+            Assert.IsTrue(firstPerson);
+            Assert.IsTrue(secondPerson);
         }
 
         [TestMethod]
         public void SampleData_GetAggregateListOfStatesGivenPeopleCollectionWithValidObject_ReturnsValidString()
         {
             SampleData sampleData = new();
-            string actual = sampleData.GetAggregateListOfStatesGivenPeopleCollection(sampleData.People);
 
+            string actual = sampleData.GetAggregateListOfStatesGivenPeopleCollection(sampleData.People);
             string expected = string.Join(", ", sampleData.GetUniqueSortedListOfStatesGivenCsvRows().ToArray());
 
             Assert.AreEqual<string>(expected, actual);
