@@ -74,9 +74,9 @@ namespace Assignment.Tests
             string[] expectedStringArray = stateCollection.ToArray<string>();
             string expectedString = String.Join(", ", expectedStringArray);
 
-            string stateString = sampleData.GetAggregateSortedListOfStatesUsingCsvRows();
+            string actualString = sampleData.GetAggregateSortedListOfStatesUsingCsvRows();
 
-            Assert.AreEqual(expectedString, stateString);
+            Assert.AreEqual(expectedString, actualString);
         }
 
         [TestMethod]
