@@ -7,6 +7,14 @@ namespace Assignment
 {
     public class SampleData : ISampleData
     {
+        const int firstName = 1;
+        const int lastName = 2;
+        const int emailAddress = 3;
+        const int streetAddress = 4;
+        const int city = 5;
+        const int state = 6;
+        const int zip = 7;
+
         // 1.
         public IEnumerable<string> CsvRows
         {
@@ -48,7 +56,8 @@ namespace Assignment
         public IEnumerable<IPerson> People => CsvRows.Select(item =>
         {
             string[] items = item.Split(',');
-            Person person = new(items[1], items[2], new Address(items[4], items[5], items[6], items[7]), items[3]);
+            //Person person = new(items[1], items[2], new Address(items[4], items[5], items[6], items[7]), items[3]);
+            Person person = new(items[firstName], items[lastName], new Address(items[streetAddress], items[city], items[state], items[zip]), items[emailAddress]);
             return person;
         }).OrderBy(item => item.Address.State)
             .ThenBy(item => item.Address.City)

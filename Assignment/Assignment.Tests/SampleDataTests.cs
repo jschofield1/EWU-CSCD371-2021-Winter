@@ -9,102 +9,103 @@ namespace Assignment.Tests
     [TestClass]
     public class SampleDataTests
     {
+        const int firstName = 1;
+        const int lastName = 2;
+        const int emailAddress = 3;
+        const int streetAddress = 4;
+        const int city = 5;
+        const int state = 6;
+        const int zip = 7;
+
         [TestMethod]
         [DataRow(@".\People.csv")]
-        public void SampleData_CsvRows_ReturnsCollection(string fileName)
+        public void CsvRows_GivenData_ReturnsCollection(string fileName)
         {
             SampleData sampleData = new SampleData();
 
-            IEnumerable<string> testList = new List<String>();
+            IEnumerable<string> expected = new List<String>();
 
-            IEnumerable<string> result = sampleData.CsvRows;
+            IEnumerable<string> actual = sampleData.CsvRows;
 
             using (var fileReader = new StreamReader(fileName))
             {
-                for (string? s = fileReader.ReadLine(); !fileReader.EndOfStream; s = fileReader.ReadLine())
+                for (string? line = fileReader.ReadLine(); !fileReader.EndOfStream; line = fileReader.ReadLine())
                 {
-                    ((List<string>)testList).Add(s!);
+                    ((List<string>)expected).Add(line!);
                 }
             }
 
-            testList = testList.Skip<string>(1);
+            expected = expected.Skip<string>(1);
 
-            CollectionAssert.AreEqual(testList.ToList<string>(), result.ToList<string>());
+            CollectionAssert.AreEqual(expected.ToList<string>(), actual.ToList<string>());
         }
-
+        
         [TestMethod]
-        public void SampleData_CsvRows_SkipsFirstLine()
-        {
-            SampleData sampleData = new SampleData();
-
-            IEnumerable<string> result = sampleData.CsvRows;
-
-            Assert.AreNotEqual("Id,FirstName,LastName,Email,StreetAddress,City,State,Zip", result.First<string>());
-        }
-
-        [TestMethod]
-        public void SampleData_CsvRowsPassedFilePath_LoadsDataProperly()
+        public void CsvRows_GivenCsvRows_FirstLineNotHeader()
         {
             SampleData sampleData = new();
 
-            IEnumerable<string> result = sampleData.CsvRows;
+            string expected = "1,Priscilla,Jenyns,pjenyns0@state.gov,7884 Corry Way,Helena,MT,70577";
 
-            Assert.AreEqual("1,Priscilla,Jenyns,pjenyns0@state.gov,7884 Corry Way,Helena,MT,70577", result.First());
+            IEnumerable<string> result = sampleData.CsvRows;
+            string actual = result.First();
+
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void SampleData_GetUniqueSortedListOFStatesPassedCsvRows_LinqReturnsOrderedList()
+        public void GetUniqueSortedListOFStates_GivenUniqueSortedListOfStates_LinqReturnsOrderedList()
         {
             SampleData sampleData = new();
 
             IEnumerable<string> states = sampleData.GetUniqueSortedListOfStatesGivenCsvRows();
+            bool statesInOrder = states.SequenceEqual(states.OrderBy(item => item));
 
-            bool result = states.SequenceEqual(states.OrderBy(item => item));
-
-            Assert.IsTrue(result);
+            Assert.IsTrue(statesInOrder);
         }
 
         [TestMethod]
-        public void SampleData_GetAggregateSortedListOfStatesUsingCsvRows_ReturnsArrayOfStates()
+        public void GetAggregateSortedListOfStates_GivenUniqueSortedListOfStates_ReturnsArrayOfStates()
         {
             SampleData sampleData = new SampleData();
 
-            IEnumerable<string> stateCollection = sampleData.GetUniqueSortedListOfStatesGivenCsvRows();
+            IEnumerable<string> states = sampleData.GetUniqueSortedListOfStatesGivenCsvRows();
 
-            string[] expectedStringArray = stateCollection.ToArray<string>();
-            string expectedString = String.Join(", ", expectedStringArray);
+            string[] statesArray = states.ToArray<string>();
+            string expected = String.Join(", ", statesArray);
 
-            string actualString = sampleData.GetAggregateSortedListOfStatesUsingCsvRows();
+            string actual = sampleData.GetAggregateSortedListOfStatesUsingCsvRows();
 
-            Assert.AreEqual(expectedString, actualString);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        public void SampleData_GetAggregateSortedListOfStatesUsingCsvRows_ReturnsStringofStates()
+        public void GetAggregateSortedListOfStates_GivenAggregateSortedListOfStates_ReturnsStringofStates()
         {
             SampleData sampleData = new();
 
             string expected = "AL, AZ, CA, DC, FL, GA, IN, KS, LA, MD, MN, MO, MT, NC, NE, NH, NV, NY, OR, PA, SC, TN, TX, UT, VA, WA, WV";
+            
             string actual = sampleData.GetAggregateSortedListOfStatesUsingCsvRows();
 
             Assert.AreEqual<string>(expected, actual);
         }
 
         [TestMethod]
-        public void SampleData_PeopleGivenRows_CreatesSortedPeopleEnum()
+        public void People_GivenCsvRows_CreatesSortedPeopleEnum()
         {
             SampleData sampleData = new();
 
-            IEnumerable<IPerson> actual = sampleData.CsvRows.Select(item =>
+            IEnumerable<IPerson> result = sampleData.CsvRows.Select(item =>
             {
                 string[] items = item.Split(',');
-                Person person = new(items[1], items[2], new Address(items[4], items[5], items[6], items[7]), items[3]);
+                Person person = new(items[firstName], items[lastName], new Address(items[streetAddress], items[city], items[state], items[zip]), items[emailAddress]);
                 return person;
             }).OrderBy(item => item.Address.State)
             .ThenBy(item => item.Address.City)
             .ThenBy(item => item.Address.Zip);
 
-            IEnumerable<(IPerson, IPerson)> output = actual.Zip(sampleData.People);
+            IEnumerable<(IPerson, IPerson)> output = result.Zip(sampleData.People);
 
             Assert.IsTrue(output.All(item =>
                 (item.Item1.FirstName == item.Item2.FirstName) &&
@@ -113,14 +114,14 @@ namespace Assignment.Tests
         }
 
         [TestMethod]
-        public void SampleData_PeoplePassedHardCodedPerson_FoundInList()
+        public void People_GivenHardCodedPerson_FindsPersonInList()
         {
             SampleData sampleData = new();
 
             Address address = new("7 Onsgard Lane", "Frederick", "MD", "56551");
             Person person = new("Jermaine", "Danelutti", address, "jdaneluttim@jimdo.com");
 
-            bool output = sampleData.People.Any(item =>
+            bool correctPerson = sampleData.People.Any(item =>
             (item.FirstName == person.FirstName &&
             item.LastName == person.LastName &&
             item.EmailAddress == person.EmailAddress &&
@@ -129,40 +130,38 @@ namespace Assignment.Tests
             item.Address.State == person.Address.State &&
             item.Address.Zip == person.Address.Zip));
 
-            Assert.IsTrue(output);
+            Assert.IsTrue(correctPerson);
         }
 
         [TestMethod]
-        public void SampleData_FilterByEmailAddress_ReturnsFilteredList()
+        public void FilterByEmailAddress_GivenPeopleObject_ReturnsFilteredList()
         {
             SampleData sampleData = new SampleData();
 
-            IEnumerable<IPerson> expected = sampleData.People;
+            IEnumerable<IPerson> result = sampleData.People;
 
-            expected = expected.Where(item => item.EmailAddress.Equals("cstennine2@wired.com"));
+            result = result.Where(item => item.EmailAddress.Equals("cstennine2@wired.com"));
             
-            IEnumerable<(string FirstName, string LastName)> expectedTuple = expected.Select(item => (item.FirstName, item.LastName));
+            IEnumerable<(string FirstName, string LastName)> expectedTuple = result.Select(item => (item.FirstName, item.LastName));
             IEnumerable<(string FirstName, string LastName)> filteredList = sampleData.FilterByEmailAddress(item => item.Equals("cstennine2@wired.com"));
 
             CollectionAssert.AreEqual(expectedTuple.ToList(), filteredList.ToList());
         }
 
         [TestMethod]
-        public void SampleData_FilterByEmailAddressUsingValidPreicate_ReturnsPerson()
+        public void FilterByEmailAddress_FilterBySpecificStringInEmailAddress_ValidPersonInResults()
         {
             SampleData sampleData = new();
 
-            IEnumerable<(string, string)> actual = sampleData.FilterByEmailAddress(item => item.Contains("addthis"));
+            IEnumerable<(string, string)> result = sampleData.FilterByEmailAddress(item => item.Contains("addthis"));
 
-            bool firstPerson = actual.Any(item => item.Item1 == "Iggy" && item.Item2 == "Baughen");
-            bool secondPerson = actual.Any(item => item.Item1 == "Sayres" && item.Item2 == "Rumble");
+            bool containsExpectedString = result.Any(item => item.Item1 == "Iggy" && item.Item2 == "Baughen");
 
-            Assert.IsTrue(firstPerson);
-            Assert.IsTrue(secondPerson);
+            Assert.IsTrue(containsExpectedString);
         }
 
         [TestMethod]
-        public void SampleData_GetAggregateListOfStatesGivenPeopleCollectionWithValidObject_ReturnsValidString()
+        public void GetAggregateListOfStates_GivenAggregateListOfStates_ReturnsExpectedString()
         {
             SampleData sampleData = new();
 
