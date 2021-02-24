@@ -169,7 +169,7 @@ namespace Assignment.Tests
             node.Insert(3);
             node.CopyTo(copiedArray, 0);
 
-            Assert.AreEqual<string>($"{expectedArray.ToString()}", $"{copiedArray.ToString()}");
+            Assert.AreEqual<string>($"{expectedArray}", $"{copiedArray}");
         }
 
         [TestMethod]
@@ -182,7 +182,7 @@ namespace Assignment.Tests
             {
                 second.Insert(item);
             }
-            Assert.AreEqual<string>("2 1", $"{second.ToString()} {second.Next.ToString()}");
+            Assert.AreEqual<string>("2 1", $"{second} {second.Next}");
         }
     }
 }

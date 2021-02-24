@@ -56,7 +56,6 @@ namespace Assignment
         public IEnumerable<IPerson> People => CsvRows.Select(item =>
         {
             string[] items = item.Split(',');
-            //Person person = new(items[1], items[2], new Address(items[4], items[5], items[6], items[7]), items[3]);
             Person person = new(items[firstName], items[lastName], new Address(items[streetAddress], items[city], items[state], items[zip]), items[emailAddress]);
             return person;
         }).OrderBy(item => item.Address.State)

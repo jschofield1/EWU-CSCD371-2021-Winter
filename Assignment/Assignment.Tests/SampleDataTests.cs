@@ -139,10 +139,9 @@ namespace Assignment.Tests
             SampleData sampleData = new SampleData();
 
             IEnumerable<IPerson> result = sampleData.People;
-
             result = result.Where(item => item.EmailAddress.Equals("cstennine2@wired.com"));
-            
             IEnumerable<(string FirstName, string LastName)> expectedTuple = result.Select(item => (item.FirstName, item.LastName));
+            
             IEnumerable<(string FirstName, string LastName)> filteredList = sampleData.FilterByEmailAddress(item => item.Equals("cstennine2@wired.com"));
 
             CollectionAssert.AreEqual(expectedTuple.ToList(), filteredList.ToList());
@@ -154,7 +153,6 @@ namespace Assignment.Tests
             SampleData sampleData = new();
 
             IEnumerable<(string, string)> result = sampleData.FilterByEmailAddress(item => item.Contains("addthis"));
-
             bool containsExpectedString = result.Any(item => item.Item1 == "Iggy" && item.Item2 == "Baughen");
 
             Assert.IsTrue(containsExpectedString);
@@ -166,6 +164,7 @@ namespace Assignment.Tests
             SampleData sampleData = new();
 
             string actual = sampleData.GetAggregateListOfStatesGivenPeopleCollection(sampleData.People);
+            
             string expected = string.Join(", ", sampleData.GetUniqueSortedListOfStatesGivenCsvRows().ToArray());
 
             Assert.AreEqual<string>(expected, actual);
