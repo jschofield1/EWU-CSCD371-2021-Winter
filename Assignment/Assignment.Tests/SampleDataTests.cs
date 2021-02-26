@@ -9,13 +9,13 @@ namespace Assignment.Tests
     [TestClass]
     public class SampleDataTests
     {
-        const int firstName = 1;
-        const int lastName = 2;
-        const int emailAddress = 3;
-        const int streetAddress = 4;
-        const int city = 5;
-        const int state = 6;
-        const int zip = 7;
+        const int FirstName = 1;
+        const int LastName = 2;
+        const int EmailAddress = 3;
+        const int StreetAddress = 4;
+        const int City = 5;
+        const int State = 6;
+        const int Zip = 7;
 
         [TestMethod]
         [DataRow(@".\People.csv")]
@@ -54,7 +54,7 @@ namespace Assignment.Tests
         }
 
         [TestMethod]
-        public void GetUniqueSortedListOFStates_GivenUniqueSortedListOfStates_LinqReturnsOrderedList()
+        public void GetUniqueSortedListOFStatesGivenCsvRows_GivenUniqueSortedListOfStates_LinqReturnsOrderedList()
         {
             SampleData sampleData = new();
 
@@ -65,7 +65,7 @@ namespace Assignment.Tests
         }
 
         [TestMethod]
-        public void GetAggregateSortedListOfStates_GivenUniqueSortedListOfStates_ReturnsArrayOfStates()
+        public void GetUniqueSortedListOfStatesGivenCsvRows_GivenListOfStates_ReturnsExpectedArrayOfStates()
         {
             SampleData sampleData = new SampleData();
 
@@ -80,7 +80,7 @@ namespace Assignment.Tests
         }
 
         [TestMethod]
-        public void GetAggregateSortedListOfStates_GivenAggregateSortedListOfStates_ReturnsStringofStates()
+        public void GetAggregateSortedListOfStatesUsingCsvRows_GivenListOfStates_ReturnsExpectedStringofStates()
         {
             SampleData sampleData = new();
 
@@ -99,7 +99,7 @@ namespace Assignment.Tests
             IEnumerable<IPerson> result = sampleData.CsvRows.Select(item =>
             {
                 string[] items = item.Split(',');
-                Person person = new(items[firstName], items[lastName], new Address(items[streetAddress], items[city], items[state], items[zip]), items[emailAddress]);
+                Person person = new(items[FirstName], items[LastName], new Address(items[StreetAddress], items[City], items[State], items[Zip]), items[EmailAddress]);
                 return person;
             }).OrderBy(item => item.Address.State)
             .ThenBy(item => item.Address.City)
@@ -148,18 +148,20 @@ namespace Assignment.Tests
         }
 
         [TestMethod]
-        public void FilterByEmailAddress_FilterBySpecificStringInEmailAddress_ValidPersonInResults()
+        public void FilterByEmailAddress_FilterBySpecificStringInEmailAddress_ValidPeopleInResults()
         {
             SampleData sampleData = new();
 
-            IEnumerable<(string, string)> result = sampleData.FilterByEmailAddress(item => item.Contains("addthis"));
-            bool containsExpectedString = result.Any(item => item.Item1 == "Iggy" && item.Item2 == "Baughen");
+            IEnumerable<(string, string)> result = sampleData.FilterByEmailAddress(item => item.Contains("addthis.com"));
+            bool containsExpectedPerson1 = result.Any(item => item.Item1 == "Iggy" && item.Item2 == "Baughen");
+            bool containsExpectedPerson2 = result.Any(item => item.Item1 == "Sayres" && item.Item2 == "Rumble");
 
-            Assert.IsTrue(containsExpectedString);
+            Assert.IsTrue(containsExpectedPerson1);
+            Assert.IsTrue(containsExpectedPerson2);
         }
 
         [TestMethod]
-        public void GetAggregateListOfStates_GivenAggregateListOfStates_ReturnsExpectedString()
+        public void GetAggregateListOfStatesGivenPeopleCollection_GivenListOfStates_ReturnsExpectedString()
         {
             SampleData sampleData = new();
 
