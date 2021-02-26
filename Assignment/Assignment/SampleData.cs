@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,13 +7,13 @@ namespace Assignment
 {
     public class SampleData : ISampleData
     {
-        const int firstName = 1;
-        const int lastName = 2;
-        const int emailAddress = 3;
-        const int streetAddress = 4;
-        const int city = 5;
-        const int state = 6;
-        const int zip = 7;
+        const int FirstName = 1;
+        const int LastName = 2;
+        const int EmailAddress = 3;
+        const int StreetAddress = 4;
+        const int City = 5;
+        const int State = 6;
+        const int Zip = 7;
 
         // 1.
         public IEnumerable<string> CsvRows
@@ -56,7 +56,7 @@ namespace Assignment
         public IEnumerable<IPerson> People => CsvRows.Select(item =>
         {
             string[] items = item.Split(',');
-            Person person = new(items[firstName], items[lastName], new Address(items[streetAddress], items[city], items[state], items[zip]), items[emailAddress]);
+            Person person = new(items[FirstName], items[LastName], new Address(items[StreetAddress], items[City], items[State], items[Zip]), items[EmailAddress]);
             return person;
         }).OrderBy(item => item.Address.State)
             .ThenBy(item => item.Address.City)
