@@ -63,7 +63,7 @@ namespace Assignment7
             
             int repetitions = -42;
             
-            Assert.AreEqual(0, Assignment7.DownloadTextRepeatedlyAsync(repetitions, token, new Progress<double>(x => Console.WriteLine(x)), "https://google.com", "https://google.com").Result);
+            Assert.AreEqual(0, Assignment7.DownloadTextRepeatedlyAsync(repetitions, token, new Progress<double>(duration => Console.WriteLine(duration)), "https://google.com", "https://google.com").Result);
         }
 
         [TestMethod]
@@ -75,7 +75,7 @@ namespace Assignment7
             
             int repetitions = 42;
             
-            int result = Assignment7.DownloadTextRepeatedlyAsync(repetitions, token, new Progress<double>(duration => Assignment7.CancelTask(.1, duration, source)), "https://google.com", "https://google.com").Result;
+            int result = Assignment7.DownloadTextRepeatedlyAsync(repetitions, token, new Progress<double>(duration => Assignment7.CancelTask(.5, duration, source)), "https://google.com", "https://google.com").Result;
             
             Assert.IsTrue(result > 42 && result < 10000000);
         }

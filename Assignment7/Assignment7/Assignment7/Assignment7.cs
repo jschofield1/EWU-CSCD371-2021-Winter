@@ -24,7 +24,6 @@ namespace Assignment7
 
         public static async Task<int> DownloadTextRepeatedlyAsync(int repetitions, CancellationToken cancellationToken, IProgress<double> progress, params string[] urls)
         {
-
             if (repetitions < 0) 
                 throw new AggregateException(nameof(repetitions));
             
@@ -46,7 +45,7 @@ namespace Assignment7
 
         public static void CancelTask(double progress, double duration, CancellationTokenSource source)
         {
-            if (duration > progress)
+            if (progress < duration)
                 source.Cancel();
         }
     }
