@@ -42,14 +42,15 @@ namespace Assignment8
                 _StartTime = DateTime.Now;
                 dispatcherTimer.Start();
                 _IsStopped = false;
+                StartAndStop.Content = "Stop timer";
+                StartAndStop.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#ff0000");
+
                 AddEntry.Visibility = Visibility.Hidden;
                 Description.Visibility = Visibility.Hidden;
                 if (EntryBox.Items.Count == 0)
                 {
                     SaveEntries.Visibility = Visibility.Hidden;
                 }
-                StartAndStop.Content = "Stop timer";
-                StartAndStop.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#ff0000");
             }
             else
             {
@@ -57,9 +58,11 @@ namespace Assignment8
                 _IsStopped = true;
                 StartAndStop.Content = "Start new timer";
                 StartAndStop.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#00cc00");
+              
+                Description.Text = "Entry" + entryNumber + " (" + _StartTime.ToString("MMM dd") + ", " + _StartTime.ToString("hh:mm tt") + ")";
+
                 AddEntry.Visibility = Visibility.Visible;
                 Description.Visibility = Visibility.Visible;
-                Description.Text = "Entry" + entryNumber + " (" + _StartTime.ToString("MMM dd") + ", " + _StartTime.ToString("hh:mm tt") + ")";
             }
         }
 
@@ -68,9 +71,11 @@ namespace Assignment8
             if (_IsStopped && Timer.Text != "00:00:00")
             {
                 EntryBox.Items.Add($"{_Description}{" - "}{Timer.Text}");
-                entryNumber++;
                 Description.Text = "";
                 Timer.Text = "00:00:00";
+
+                entryNumber++;
+
                 AddEntry.Visibility = Visibility.Hidden;
                 Description.Visibility = Visibility.Hidden;
                 SaveEntries.Visibility = Visibility.Visible;
@@ -96,8 +101,6 @@ namespace Assignment8
         {
             StringBuilder stringBuilder = new();
             SaveFileDialog saveFileDialog = new();
-
-            //string fileName = saveFileDialog.FileName;
 
             if (saveFileDialog.ShowDialog() == true)
             {
