@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,10 +16,11 @@ namespace Assignment8
     public partial class MainWindow : Window
     {
         private readonly DispatcherTimer dispatcherTimer = new();
+        
         private DateTime _StartTime = DateTime.Now;
         private string _Description;
         private bool _IsStopped = true;
-        private int count = 1;
+        private int entryNumber = 1;
 
         public MainWindow()
         {
@@ -33,49 +37,96 @@ namespace Assignment8
 
         private void StartAndStop_Click(object sender, RoutedEventArgs e)
         {
-            if (StartAndStop.Content.ToString() == "Start")
+            if (StartAndStop.Content.ToString() == "Start new timer")
             {
                 _StartTime = DateTime.Now;
                 dispatcherTimer.Start();
                 _IsStopped = false;
-                Save.Visibility = Visibility.Hidden;
+                AddEntry.Visibility = Visibility.Hidden;
                 Description.Visibility = Visibility.Hidden;
-                StartAndStop.Content = "Stop";
+                if (EntryBox.Items.Count == 0)
+                {
+                    SaveEntries.Visibility = Visibility.Hidden;
+                }
+                StartAndStop.Content = "Stop timer";
                 StartAndStop.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#ff0000");
             }
             else
             {
                 dispatcherTimer.Stop();
                 _IsStopped = true;
-                StartAndStop.Content = "Start";
+                StartAndStop.Content = "Start new timer";
                 StartAndStop.Background = (SolidColorBrush)new BrushConverter().ConvertFrom("#00cc00");
-                Save.Visibility = Visibility.Visible;
+                AddEntry.Visibility = Visibility.Visible;
                 Description.Visibility = Visibility.Visible;
-                Description.Text = "Event " + count + " (" + _StartTime.ToString("MMM dd") + ", " + _StartTime.ToString("hh:mm tt") + ")";
+                Description.Text = "Entry" + entryNumber + " (" + _StartTime.ToString("MMM dd") + ", " + _StartTime.ToString("hh:mm tt") + ")";
             }
         }
 
-        private void Record_Click(object sender, RoutedEventArgs e)
+        private void AddEntry_Click(object sender, RoutedEventArgs e)
         {
             if (_IsStopped && Timer.Text != "00:00:00")
             {
-                SavedBox.Items.Add($"{_Description}{" - "}{Timer.Text}");
-                count++;
+                EntryBox.Items.Add($"{_Description}{" - "}{Timer.Text}");
+                entryNumber++;
                 Description.Text = "";
                 Timer.Text = "00:00:00";
-                Save.Visibility = Visibility.Hidden;
+                AddEntry.Visibility = Visibility.Hidden;
                 Description.Visibility = Visibility.Hidden;
+                SaveEntries.Visibility = Visibility.Visible;
             }
         }
 
-        private void SavedBox_KeyDown(object sender, KeyEventArgs e)
+        private void EntryBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Delete)
             {
-                SavedBox.Items.Remove(SavedBox.SelectedItem);
+                EntryBox.Items.Remove(EntryBox.SelectedItem);
+
+                if (EntryBox.Items.Count == 0)
+                {
+                    SaveEntries.Visibility = Visibility.Hidden;
+                }
             }
         }
 
         private void Description_TextChanged(object sender, TextChangedEventArgs e) => _Description = Description.Text;
+
+        private void SaveEntries_Click(object sender, RoutedEventArgs e)
+        {
+            StringBuilder stringBuilder = new();
+            SaveFileDialog saveFileDialog = new();
+
+            //string fileName = saveFileDialog.FileName;
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                foreach (var item in EntryBox.Items)
+                {
+                    _ = stringBuilder.AppendLine(item.ToString());
+                }
+            }
+
+            if (saveFileDialog.FileName != "")
+            {
+                File.WriteAllText(saveFileDialog.FileName, stringBuilder.ToString());
+            }
+        }
+
+        private void LoadEntries_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new();
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string fileName = openFileDialog.FileName;
+                var fileLines = File.ReadAllLines(fileName);
+
+                foreach (string line in fileLines)
+                {
+                    _ = EntryBox.Items.Add(line);
+                }
+            }
+        }
     }
 }

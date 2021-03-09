@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Assignment8"
         mc:Ignorable="d"
-        Title="Time Tracker" Height="500" Width="400">
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        Title="Time Tracker" Height="600" Width="400">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20*"/>
@@ -26,6 +29,10 @@
             <RowDefinition Height="5*"/>
             <RowDefinition Height="50*"/>
             <RowDefinition Height="5*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <TextBlock 
             x:Name="Timer"
@@ -43,7 +50,7 @@
             />
         <Button 
             x:Name="StartAndStop"
-            Content="Start"
+            Content="Start new timer"
             Grid.Column="1"
             Grid.Row="3"
             Grid.ColumnSpan="3"
@@ -74,23 +81,23 @@
             FontWeight="Normal"
             />
         <Button 
-            x:Name="Save" 
-            Content="Save" 
+            x:Name="AddEntry" 
+            Content="Add entry" 
             Grid.Column="1"
             Grid.Row="7"
             Grid.ColumnSpan="3"
             Grid.RowSpan="1"
             FontWeight="Normal"
             BorderThickness="1"
-            Click="Record_Click"
+            Click="AddEntry_Click"
             Visibility="Hidden"
             VerticalAlignment="Center"
             FontFamily="Global User Interface" 
             FontSize="24"
             />
         <ListBox 
-            x:Name="SavedBox" 
-            KeyDown="SavedBox_KeyDown"
+            x:Name="EntryBox" 
+            KeyDown="EntryBox_KeyDown"
             Grid.Column="1"
             Grid.Row="9"
             Grid.ColumnSpan="3"
@@ -98,8 +105,36 @@
             FontWeight="Normal"
             FontFamily="Global User Interface" 
             FontSize="20"
-           >
-        </ListBox>
+           />
+        <Button 
+            x:Name="SaveEntries" 
+            Content="Save entries to file" 
+            Grid.Column="1"
+            Grid.Row="11"
+            Grid.ColumnSpan="3"
+            Grid.RowSpan="1"
+            FontWeight="Normal"
+            BorderThickness="1"
+            Click="SaveEntries_Click"
+            Visibility="Hidden"
+            VerticalAlignment="Center"
+            FontFamily="Global User Interface" 
+            FontSize="24"
+            />
+        <Button 
+            x:Name="LoadEntries" 
+            Content="Load entries from file" 
+            Grid.Column="1"
+            Grid.Row="13"
+            Grid.ColumnSpan="3"
+            Grid.RowSpan="1"
+            FontWeight="Normal"
+            BorderThickness="1"
+            Click="LoadEntries_Click"
+            VerticalAlignment="Center"
+            FontFamily="Global User Interface" 
+            FontSize="24"
+            />
     </Grid>
 </Window>
     
