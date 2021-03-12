@@ -18,7 +18,7 @@ namespace Assignment8
         private readonly DispatcherTimer dispatcherTimer = new();
         
         private DateTime _StartTime = DateTime.Now;
-        private string _Description;
+        private string _Description = null!;
         private bool _IsStopped = true;
         private int entryNumber = 1;
 
@@ -26,7 +26,7 @@ namespace Assignment8
         {
             InitializeComponent();
 
-            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick);
+            dispatcherTimer.Tick += new EventHandler(DispatcherTimer_Tick!);
             dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
         }
 
